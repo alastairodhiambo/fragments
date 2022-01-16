@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/alastairodhiambo/fragments/issues"
   },
-  "homepage": "https://github.com/alastairodhiambo/fragments#readme"
+  "homepage": "https://github.com/alastairodhiambo/fragments#readme",
+  "devDependencies": {
+    "prettier": "2.5.1"
+  }
 }
