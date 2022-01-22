@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
+const passport = require('passport');
+const authorization = require('./authorization');
 
 const { version, author } = require('../package.json');
 
@@ -18,7 +20,12 @@ app.use(helmet());
 
 app.use(cors());
 
+// Use gzip/deflate compression middleware
 app.use(compression());
+
+// Set up our passport authorization middleware
+passport.use(authorization.strategy());
+app.use(passport.initialize());
 
 app.use('/', require('./routes'));
 
