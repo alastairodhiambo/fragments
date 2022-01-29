@@ -4,6 +4,7 @@ const helmet = require('helmet');
 const compression = require('compression');
 const passport = require('passport');
 const authorization = require('./authorization');
+const { createErrorResponse } = require('./response');
 
 const logger = require('./logger');
 const pino = require('pino-http')({
@@ -46,13 +47,7 @@ app.use((err, req, res, next) => {
     logger.error({ err }, `Error processing request`);
   }
 
-  res.status(status).json({
-    status: 'error',
-    error: {
-      message,
-      code: status,
-    },
-  });
+  res.status(status).json(createErrorResponse(status, message));
 });
 
 module.exports = app;
