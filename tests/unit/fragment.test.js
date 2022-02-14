@@ -1,7 +1,7 @@
 const { Fragment } = require('../../src/model/fragment');
 
 // Wait for a certain number of ms. Returns a Promise.
-const wait = async (ms = 10) => new Promise((resolve) => setTimeout(resolve, ms));
+const wait = async (ms = 1000) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const validTypes = [
   `text/plain`,
@@ -247,7 +247,10 @@ describe('Fragment class', () => {
       await fragment.save();
       await fragment.setData(Buffer.from('a'));
 
+      console.log({ 'Before deletion': await Fragment.byId('1234', fragment.id) });
+
       await Fragment.delete('1234', fragment.id);
+
       expect(() => Fragment.byId('1234', fragment.id)).rejects.toThrow();
     });
   });
