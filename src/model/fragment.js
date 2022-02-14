@@ -10,7 +10,7 @@ const {
   readFragment,
   writeFragment,
   readFragmentData,
-  writeFragmentData,
+  // writeFragmentData,
   listFragments,
   deleteFragment,
 } = require('./data');
