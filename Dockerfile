@@ -1,9 +1,9 @@
 # This is the Dockerfile for fragments microservice
 
-# Use node version 16.13.2
-FROM node:16.13.2
+# Use node alpine version because it saves space
+FROM node:16.14-alpine3.14@sha256:98a87dfa76dde784bb4fe087518c839697ce1f0e4f55e6ad0b49f0bfd5fbe52c
 
-LABEL maintainer="Alastair Odhiambo <alastairodhiambo@outlook.com"
+LABEL maintainer="Alastair Odhiambo <alastairodhiambo@outlook.com>"
 LABEL description="Fragments node.js microservice"
 
 # We default to use port 8080 in our service
@@ -20,11 +20,16 @@ ENV NPM_CONFIG_COLOR=false
 # Use /app as our working directory
 WORKDIR /app
 
+COPY --chown=node:node . /app
+
 # Copy the package.json and package-lock.json files into /app
 COPY package*.json /app/
 
 # Install node dependencies defined in package-lock.json
-RUN npm install
+RUN npm ci -only=production
+
+# Install dumb-init
+RUN apk add --no-cache tini
 
 # Copy src to /app/src/
 COPY ./src ./src
@@ -32,8 +37,17 @@ COPY ./src ./src
 # Copy our HTPASSWD file
 COPY ./tests/.htpasswd ./tests/.htpasswd
 
+# Make the entrypoint tini
+ENTRYPOINT ["/sbin/tini", "--"]
+
+# Change the user before we run the app
+USER node
+
 # Start the container by running our server
-CMD npm start
+CMD ["node","src/server.js"]
 
 # We run our service on port 8080
 EXPOSE 8080
+
+# Healthcheck
+HEALTHCHECK --interval=3m CMD curl --fail http://localhost:${PORT}/ || exit 1
