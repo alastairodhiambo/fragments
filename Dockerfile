@@ -28,7 +28,7 @@ COPY package*.json /app/
 # Install node dependencies defined in package-lock.json
 RUN npm ci -only=production \
 # Install dumb-init
-&& apk add --no-cache tini=0.19.0
+&& apk add --no-cache tini=~0.19.0
 
 # Copy src to /app/src/
 COPY ./src ./src
