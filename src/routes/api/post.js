@@ -2,7 +2,7 @@ const logger = require('../../logger');
 const { Fragment } = require('../../model/fragment');
 const { createSuccessResponse, createErrorResponse } = require('../../response');
 
-module.exports = (req, res) => {
+module.exports = async (req, res) => {
   const data = req.body;
   const user = req.user;
   const type = req.headers['content-type'];
@@ -14,11 +14,12 @@ module.exports = (req, res) => {
 
   try {
     const fragment = new Fragment({ ownerId: user, type: type });
-    fragment.save();
-    fragment.setData(data);
+    await fragment.save();
+    await fragment.setData(data);
 
     res.status(201).json(createSuccessResponse({ fragment }));
   } catch (err) {
+    // TODO: Refactor this to avoid repetition
     const status = err.status || 500;
     const message = err.message;
 

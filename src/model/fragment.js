@@ -54,7 +54,7 @@ class Fragment {
   static async byUser(ownerId, expand = false) {
     logger.debug({ ownerId, expand }, 'byUser()');
 
-    return await listFragments(ownerId, expand);
+    return listFragments(ownerId, expand);
   }
 
   /**
@@ -99,12 +99,7 @@ class Fragment {
    * @returns Promise<Buffer>
    */
   async getData() {
-    try {
-      const data = await readFragmentData(this.ownerId, this.id);
-      return data;
-    } catch (err) {
-      throw new Error(err);
-    }
+    return readFragmentData(this.ownerId, this.id);
   }
 
   /**
@@ -122,10 +117,10 @@ class Fragment {
         throw Error('Data is not buffer');
       }
 
-      this.size = [...data].length;
+      this.size = Buffer.byteLength(data);
       this.updated = new Date();
 
-      // return await writeFragmentData(this.ownerId, this.id, data); //Causing an error
+      // return await writeFragmentData(this.ownerId, this.id, data); //TODO: Causing an error
     } catch (err) {
       throw new Error(err);
     }
@@ -135,7 +130,8 @@ class Fragment {
    * Returns the mime type (e.g., without encoding) for the fragment's type:
    * "text/html; charset=utf-8" -> "text/html"
    * @returns {string} fragment's mime type (without encoding)
-   */ w;
+   */
+
   get mimeType() {
     const { type } = contentType.parse(this.type);
     return type;
