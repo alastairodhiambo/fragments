@@ -14,16 +14,38 @@ const router = express.Router();
 // Define our first route, which will be: GET /v1/fragments
 router.get('/fragments', require('./get'));
 
-router.get('/fragments/:id', async (req, res) => {
+// TODO: `GET /fragments/:id` returns an existing fragment's data with the expected `Content-Type`, with unit tests. See 4.5.
+
+router.get('/fragments/:id', async (req, res, next) => {
   const user = req.user;
+  const id = req.params.id;
 
-  logger.debug({ user }, 'GET /:ID User');
-  logger.debug({ req }, 'GET /:ID Req');
+  logger.debug({ user, id }, 'GET /:ID User and ID');
 
-  // TODO: Add fragments function
+  try {
+    const fragment = await Fragment.byId(user, id);
+    const data = (await fragment.getData()).toString();
+    logger.debug(data, '/fragments/:id getData()');
 
-  res.status(200).json(createSuccessResponse({ message: 'GET /:ID Ran!' }));
+    res.status(200).send(data);
+  } catch (err) {
+    next(err);
+  }
 });
+
+router.get('/fragments/:id/info', async (req, res) => {
+  const user = req.user;
+  const id = req.params.id;
+
+  logger.debug({ user, id }, 'GET /:ID User and ID');
+
+  const data = await Fragment.byId(user, id);
+
+  res.status(200).json(createSuccessResponse({ message: data }));
+});
+
+// TODO: `GET /fragments/:id.ext` returns an existing fragment's data converted to a supported type.
+// Initial, you only need to support Markdown fragments (`.md`) converted to HTML (`.html`) using [markdown-it](https://github.com/markdown-it/markdown-it) (i.e., you don't have to do other conversions until [Assignment 3](https://github.com/humphd/ccp555-winter-2022/blob/main/assignments/assignment-03/README.md))
 
 // Support sending various Content-Types on the body up to 5M in size
 const rawBody = () =>
@@ -41,7 +63,5 @@ const rawBody = () =>
 
 // Use a raw body parser for POST, which will give a `Buffer` Object or `{}` at `req.body`
 router.post('/fragments', rawBody(), require('./post'));
-
-// Other routes will go here later on...
 
 module.exports = router;
