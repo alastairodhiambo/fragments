@@ -10,7 +10,7 @@ const {
   readFragment,
   writeFragment,
   readFragmentData,
-  // writeFragmentData,
+  writeFragmentData,
   listFragments,
   deleteFragment,
 } = require('./data');
@@ -22,8 +22,6 @@ const validTypes = [
   'text/html',
   'application/json',
 ];
-
-logger.debug(readFragment, 'readFragment()');
 
 class Fragment {
   constructor({ id, ownerId, created, updated, type, size = 0 }) {
@@ -64,7 +62,16 @@ class Fragment {
    * @returns Promise<Fragment>
    */
   static async byId(ownerId, id) {
-    return await readFragment(ownerId, id);
+    try {
+      const data = await readFragment(ownerId, id);
+      if (data === undefined) {
+        throw new Error('Fragment does not exist.');
+      }
+
+      return data;
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 
   /**
@@ -99,7 +106,10 @@ class Fragment {
    * @returns Promise<Buffer>
    */
   async getData() {
-    return readFragmentData(this.ownerId, this.id);
+    const data = await readFragmentData(this.ownerId, this.id);
+    logger.debug({ data }, 'getData() data');
+
+    return data;
   }
 
   /**
@@ -117,10 +127,12 @@ class Fragment {
         throw Error('Data is not buffer');
       }
 
+      logger.debug({ data }, 'setData() data');
+
       this.size = Buffer.byteLength(data);
       this.updated = new Date();
 
-      // return await writeFragmentData(this.ownerId, this.id, data); //TODO: Causing an error
+      return await writeFragmentData(this.ownerId, this.id, data);
     } catch (err) {
       throw new Error(err);
     }
