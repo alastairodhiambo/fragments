@@ -42,9 +42,15 @@ module.exports.getInfo = async (req, res, next) => {
   logger.debug({ user, id }, 'GET /:ID User and ID');
 
   try {
-    const data = await Fragment.byId(user, id);
-    res.status(200).json(createSuccessResponse({ message: data }));
+    const fragment = await Fragment.byId(user, id);
+    res.status(200).json(createSuccessResponse({ fragment }));
   } catch (err) {
     next(err);
   }
+};
+
+// `GET /fragments/:id.ext` returns an existing fragment's data converted to a supported type.
+// eslint-disable-next-line no-unused-vars
+module.exports.getbyIdExt = async (req, res, next) => {
+  //TODO:
 };

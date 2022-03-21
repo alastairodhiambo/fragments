@@ -9,16 +9,14 @@ const { Fragment } = require('../../model/fragment');
 // Create a router on which to mount our API endpoints
 const router = express.Router();
 
-const { getRoute, getById, getInfo } = require('./get');
+const { getRoute, getById, getInfo, getbyIdExt } = require('./get');
 const route = '/fragments';
 
 // GET routes
 router.get(route, getRoute);
 router.get(`${route}/:id`, getById);
-router.get(`${route}/fragments/:id/info`, getInfo);
-
-// TODO: `GET /fragments/:id.ext` returns an existing fragment's data converted to a supported type.
-// Initial, you only need to support Markdown fragments (`.md`) converted to HTML (`.html`) using [markdown-it](https://github.com/markdown-it/markdown-it) (i.e., you don't have to do other conversions until [Assignment 3](https://github.com/humphd/ccp555-winter-2022/blob/main/assignments/assignment-03/README.md))
+router.get(`${route}/:id/info`, getInfo);
+router.get(`${route}/:id.ext`, getbyIdExt);
 
 // Support sending various Content-Types on the body up to 5M in size
 const rawBody = () =>

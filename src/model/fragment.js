@@ -107,7 +107,7 @@ class Fragment {
    */
   async getData() {
     const data = await readFragmentData(this.ownerId, this.id);
-    logger.debug({ data }, 'getData() data');
+    // logger.debug({ data }, 'getData() data'); // Is lengthy for larger files
 
     return data;
   }
@@ -127,7 +127,7 @@ class Fragment {
         throw Error('Data is not buffer');
       }
 
-      logger.debug({ data }, 'setData() data');
+      // logger.debug({ data }, 'setData() data'); // Is lengthy for larger files
 
       this.size = Buffer.byteLength(data);
       this.updated = new Date();
@@ -166,6 +166,8 @@ class Fragment {
   get formats() {
     if (this.type === validTypes[0] || validTypes[1]) {
       return ['text/plain'];
+    } else if (this.type === validTypes[2]) {
+      return ['text/html'];
     } else return [];
   }
 
