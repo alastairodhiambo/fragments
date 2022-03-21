@@ -27,5 +27,5 @@ describe('POST /v1/fragments', () => {
     expect(res.statusCode).toBe(500);
   });
 
-  // TODO: we'll need to add tests to check the different types of posts later
+  // TODO: add tests to check the different types of posts later
 });
