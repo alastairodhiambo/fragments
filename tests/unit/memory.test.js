@@ -7,7 +7,7 @@ const {
   readFragment,
   writeFragmentData,
   readFragmentData,
-} = require('../src/model/data/memory/index');
+} = require('../../src/model/data/memory/index');
 
 describe('Memory Tests', () => {
   describe('writeFragment', () => {
