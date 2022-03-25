@@ -68,6 +68,8 @@ class Fragment {
         throw new Error('Fragment does not exist.');
       }
 
+      logger.debug({ data }, 'byId()');
+
       return data;
     } catch (err) {
       throw new Error(err);

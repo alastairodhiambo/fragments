@@ -8,7 +8,7 @@ module.exports = async (req, res, next) => {
   const type = req.headers['content-type'];
   const host = req.headers['host'];
 
-  logger.debug({ user, data, type, req }, 'POST request:');
+  logger.debug({ user, data, type, host }, 'POST request:');
 
   try {
     const fragment = new Fragment({ ownerId: user, type: type });

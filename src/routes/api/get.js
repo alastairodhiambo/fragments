@@ -26,7 +26,11 @@ module.exports.getById = async (req, res, next) => {
   try {
     const fragment = await Fragment.byId(user, id);
     const data = (await fragment.getData()).toString();
-    logger.debug(data, '/fragments/:id getData()');
+    logger.debug({ data }, '/fragments/:id getData()');
+
+    res.type(fragment.type);
+
+    logger.debug(res, 'byId res headers');
 
     res.status(200).send(data);
   } catch (err) {
