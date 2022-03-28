@@ -40,8 +40,14 @@ app.use((req, res) => {
 
 // eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
-  const status = err.status || 500;
+  let status;
+
   const message = err.message || 'unable to process request';
+  if (message === 'Invalid type') {
+    status = 415;
+  } else if (message === 'Invalid size value' || message === 'Missing ownerId or type') {
+    status = 400;
+  } else status = err.status || 500;
 
   if (status > 499) {
     logger.error({ err }, `Error processing request`);
