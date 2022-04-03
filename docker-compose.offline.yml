@@ -31,6 +31,8 @@ services:
       # something else is defined in the env.
       - AWS_S3_BUCKET_NAME=${AWS_S3_BUCKET_NAME:-fragments}
       - AWS_DYNAMODB_TABLE_NAME=${AWS_DYNAMODB_TABLE_NAME:-fragments}
+      # To make sure that tini runs with no errors
+      - TINI_SUBREAPER=true
     # Ports to publish
     ports:
       - '8080:8080'

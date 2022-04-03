@@ -25,9 +25,10 @@ COPY --chown=node:node . /app
 # Copy the package.json and package-lock.json files into /app
 COPY package*.json /app/
 
+
 # Install node dependencies defined in package-lock.json
 RUN npm ci -only=production \
-# Install dumb-init
+# Install tini
 && apk add --no-cache tini=~0.19.0
 
 # Copy src to /app/src/
