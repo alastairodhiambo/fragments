@@ -17,7 +17,10 @@ module.exports = async (req, res, next) => {
     const id = fragment.id;
     logger.debug(id, 'POST fragment id');
 
-    res.location(`http://${host}/v1/fragments/${id}`);
+    const location = `${process.env.API_URL}/v1/fragments/${id}`;
+
+    res.location(location);
+    logger.debug({ location }, 'POST location');
     res.status(201).json(createSuccessResponse({ fragment }));
   } catch (err) {
     next(err);

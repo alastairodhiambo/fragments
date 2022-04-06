@@ -9,7 +9,7 @@ module.exports.getRoute = async (req, res) => {
   const user = req.user;
   const expand = req.query.expand || 0;
 
-  const fragments = expand == 1 ? await Fragment.byUser(user, true) : await Fragment.byUser(user);
+  const fragments = await Fragment.byUser(user, expand == 1);
 
   logger.debug({ fragments, expand }, 'List Fragments, Expand');
 

@@ -47,6 +47,11 @@ app.use((err, req, res, next) => {
     status = 415;
   } else if (message === 'Invalid size value' || message === 'Missing ownerId or type') {
     status = 400;
+  } else if (
+    message === 'Error: Fragment does not exist.' ||
+    message === 'unable to read fragment data'
+  ) {
+    status = 404;
   } else status = err.status || 500;
 
   if (status > 499) {
