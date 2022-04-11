@@ -39,10 +39,10 @@ class Fragment {
       this.id = id ? id : nanoid();
       this.ownerId = ownerId;
       if (!created || Object.keys(created).length === 0) {
-        this.created = new Date().toString();
+        this.created = new Date().toISOString();
       } else this.created = created;
       if (!updated || Object.keys(updated).length === 0) {
-        this.updated = new Date().toString();
+        this.updated = new Date().toISOString();
       } else this.updated = updated;
     } else throw Error('Missing ownerId or type');
   }
@@ -102,7 +102,7 @@ class Fragment {
    */
   save() {
     logger.debug(this, 'save()');
-    this.updated = new Date().toString();
+    this.updated = new Date().toISOString();
 
     return writeFragment(this);
   }
@@ -136,7 +136,7 @@ class Fragment {
       // logger.debug({ data }, 'setData() data'); // Is lengthy for larger files
 
       this.size = Buffer.byteLength(data);
-      this.updated = new Date().toString();
+      this.updated = new Date().toISOString();
 
       return await writeFragmentData(this.ownerId, this.id, data);
     } catch (err) {

@@ -6,11 +6,14 @@ module.exports = async (req, res, next) => {
   const data = req.body;
   const user = req.user;
   const type = req.headers['content-type'];
-  const host = req.headers['host'];
 
-  logger.debug({ user, data, type, host }, 'POST request:');
+  logger.debug({ user, data, type }, 'POST request:');
 
   try {
+    if (!Fragment.isSupportedType(type)) {
+      throw new Error('Invalid type');
+    }
+
     const size = Buffer.byteLength(data);
     const fragment = new Fragment({ ownerId: user, type: type, size: size });
     await fragment.save();
