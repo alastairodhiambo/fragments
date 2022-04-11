@@ -11,7 +11,8 @@ module.exports = async (req, res, next) => {
   logger.debug({ user, data, type, host }, 'POST request:');
 
   try {
-    const fragment = new Fragment({ ownerId: user, type: type });
+    const size = Buffer.byteLength(data);
+    const fragment = new Fragment({ ownerId: user, type: type, size: size });
     await fragment.save();
     await fragment.setData(data);
     const id = fragment.id;
