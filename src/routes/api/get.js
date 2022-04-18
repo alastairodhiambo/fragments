@@ -39,7 +39,6 @@ module.exports.getById = async (req, res, next) => {
     const fragment = new Fragment(metadata);
     logger.debug({ fragment }, '/fragments/:id fragment');
     const data = await fragment.getData();
-    // logger.debug({ data }, '/fragments/:id getData()');
 
     let type = fragment.type;
     if (type.includes('; charset=utf-8')) {
