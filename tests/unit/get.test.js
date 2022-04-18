@@ -45,6 +45,41 @@ describe('GET Requests:', () => {
       request(app).get('/v1/fragments').expect(401));
   });
 
+  describe('GET /v1/fragments/:id.ext', () => {
+    test('unauthenticated requests are denied', () =>
+      request(app).get('/v1/fragments/:id.ext').expect(401));
+
+    test('fetch by ID.ext should return the existing fragment in the selected content type', async () => {
+      const response = await request(app)
+        .post('/v1/fragments')
+        .auth('user1@email.com', 'password1')
+        .send({
+          body: 'This is a fragment',
+        });
+      const id = await response.body.fragment.id;
+
+      const res = await request(app)
+        .get(`/v1/fragments/${id}.txt`)
+        .auth('user1@email.com', 'password1');
+      expect(res.statusCode).toBe(200);
+    });
+
+    test('fetch by ID should return Invalid Type for unsupported conversion', async () => {
+      const response = await request(app)
+        .post('/v1/fragments')
+        .auth('user1@email.com', 'password1')
+        .send({
+          body: 'This is a fragment',
+        });
+      const id = await response.body.fragment.id;
+
+      const res = await request(app)
+        .get(`/v1/fragments/${id}.jpg`)
+        .auth('user1@email.com', 'password1');
+      expect(res.statusCode).toBe(415);
+    });
+  });
+
   describe('GET /v1/fragments/:id/info', () => {
     test('fetch by ID should return the existing fragment metadata', async () => {
       const response = await request(app)
@@ -64,10 +99,5 @@ describe('GET Requests:', () => {
 
     test('unauthenticated requests are denied', () =>
       request(app).get('/v1/fragments').expect(401));
-  });
-
-  describe('GET /v1/fragments/:id.ext', () => {
-    test('unauthenticated requests are denied', () =>
-      request(app).get('/v1/fragments/:id.ext').expect(401));
   });
 });
