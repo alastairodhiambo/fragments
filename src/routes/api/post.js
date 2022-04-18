@@ -7,7 +7,7 @@ module.exports = async (req, res, next) => {
   const user = req.user;
   const type = req.headers['content-type'];
 
-  logger.debug({ user, data, type }, 'POST request:');
+  logger.debug({ user, type }, 'POST request:');
 
   try {
     if (!Fragment.isSupportedType(type)) {

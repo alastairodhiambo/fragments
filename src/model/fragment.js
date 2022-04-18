@@ -15,13 +15,17 @@ const {
   deleteFragment,
 } = require('./data');
 
-const validTypes = [
-  'text/plain',
-  'text/plain; charset=utf-8',
-  'text/markdown',
-  'text/html',
-  'application/json',
-];
+const validTypes = {
+  txt: 'text/plain',
+  txtCharset: 'text/plain; charset=utf-8',
+  md: 'text/markdown',
+  html: 'text/html',
+  json: 'application/json',
+  png: 'image/png',
+  jpg: 'image/jpeg',
+  webp: 'image/webp',
+  gif: 'image/gif',
+};
 
 class Fragment {
   constructor({ id, ownerId, created, updated, type, size = 0 }) {
@@ -170,11 +174,33 @@ class Fragment {
    * @returns {Array<string>} list of supported mime types
    */
   get formats() {
-    if (this.type === validTypes[0] || validTypes[1]) {
-      return ['text/plain'];
-    } else if (this.type === validTypes[2]) {
-      return ['text/html'];
-    } else return [];
+    let array = [];
+
+    switch (this.type) {
+      case validTypes.txt:
+      case validTypes.txtCharset:
+        array = [validTypes.txt];
+        break;
+      case validTypes.md:
+        array = [validTypes.md, validTypes.txt, validTypes.html];
+        break;
+      case validTypes.html:
+        array = [validTypes.html, validTypes.txt];
+        break;
+      case validTypes.json:
+        array = [validTypes.json, validTypes.txt];
+        break;
+      case validTypes.png:
+      case validTypes.jpg:
+      case validTypes.webp:
+      case validTypes.gif:
+        array = [validTypes.png, validTypes.jpg, validTypes.webp, validTypes.gif];
+        break;
+      default:
+        array = [];
+    }
+
+    return array;
   }
 
   /**
@@ -183,8 +209,9 @@ class Fragment {
    * @returns {boolean} true if we support this Content-Type (i.e., type/subtype)
    */
   static isSupportedType(value) {
-    return validTypes.includes(value);
+    return Object.values(validTypes).includes(value);
   }
 }
 
 module.exports.Fragment = Fragment;
+module.exports.validTypes = validTypes;
