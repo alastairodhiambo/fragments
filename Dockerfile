@@ -29,7 +29,9 @@ COPY package*.json /app/
 # Install node dependencies defined in package-lock.json
 RUN npm ci -only=production \
 # Install tini
-&& apk add --no-cache tini=~0.19.0
+&& apk add --no-cache tini=~0.19.0 \
+# Install curl
+&& apk add --no-cache curl
 
 # Copy src to /app/src/
 COPY ./src ./src
