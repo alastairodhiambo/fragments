@@ -31,7 +31,7 @@ RUN npm ci -only=production \
 # Install tini
 && apk add --no-cache tini=~0.19.0 \
 # Install curl
-&& apk add --no-cache curl
+&& apk add --no-cache curl=~7.82.0
 
 # Copy src to /app/src/
 COPY ./src ./src

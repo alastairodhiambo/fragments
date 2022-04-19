@@ -92,7 +92,7 @@ jobs:
       - name: Setup Local AWS Resources
         run: ./scripts/local-aws-setup.sh
       - name: Run Hurl Tests
-        run: hurl --test --glob ./tests/integration/**/*.hurl
+        run: hurl --test --file-root "tests/integration/fixtures" --glob "tests/integration/**/*.hurl"
 
   # Add a job for deploying to docker
   docker-hub:
