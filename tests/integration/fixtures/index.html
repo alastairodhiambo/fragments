@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Fragments UI</title>
+    <link rel="stylesheet" href="https://unpkg.com/bamboo.css" />
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <h1>Fragments UI</h1>
+    <section>
+      <nav>
+        <button id="login">Login</button><button id="logout">Logout</button>
+      </nav>
+    </section>
+    <section hidden id="user">
+      <h2>Hello <span class="username"></span>!</h2>
+    </section>
+
+    <section id="fragment-section" hidden>
+      <button id="get-user-fragments">Get User Fragments</button>
+      <button id="get-user-fragments-expanded">
+        Get User Fragments Expanded
+      </button>
+      <button id="get-fragment-data">Get Fragment Data</button>
+      <div class="add-fragment-container">
+        <label for="type">Fragment Type</label>
+
+        <input
+          type="text"
+          id="type"
+          name="type"
+          required
+          minlength="4"
+          maxlength="30"
+          size="25"
+        />
+
+        <label for="content">Content:</label>
+
+        <div id="dropTarget">Drag Here</div>
+        <p>or</p>
+
+        <input
+          type="file"
+          id="content"
+          name="content"
+          size="10"
+        />
+        <br>
+        <button id="add-fragment">Add Fragment</button>
+      </div>
+    </section>
+  </body>
+</html>
