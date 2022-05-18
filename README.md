@@ -1,6 +1,6 @@
 # fragments
 
-Microservice Project for CCP555 (Cloud Computing for Programmers)
+Microservice Project for Cloud Computing for Programmers class
 
 ## Preparation
 
